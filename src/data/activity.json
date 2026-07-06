@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Riya Sharma",
+    "email": "riya@example.com",
+    "phone": "9876500001",
+    "team": "Adventure",
+    "role": "Zipline Rider"
+  },
+  {
+    "name": "Ankit Verma",
+    "email": "ankit@example.com",
+    "phone": "9876500002",
+    "team": "Adventure",
+    "role": "Rock Climber"
+  },
+  {
+    "name": "Nisha Patel",
+    "email": "nisha@example.com",
+    "phone": "9876500003",
+    "team": "Adventure",
+    "role": "Kayak Participant"
+  }
+]

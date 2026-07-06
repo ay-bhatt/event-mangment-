@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Priya Joshi",
+    "email": "priya.joshi@example.com",
+    "phone": "9876501001",
+    "team": "Cultural",
+    "role": "Dance Performer"
+  },
+  {
+    "name": "Sahil Kumar",
+    "email": "sahil.kumar@example.com",
+    "phone": "9876501002",
+    "team": "Cultural",
+    "role": "Music Performer"
+  },
+  {
+    "name": "Meera Singh",
+    "email": "meera.singh@example.com",
+    "phone": "9876501003",
+    "team": "Cultural",
+    "role": "Theatre Artist"
+  }
+]
