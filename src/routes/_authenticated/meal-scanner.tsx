@@ -75,6 +75,14 @@ type ScanResult = {
   updatedStatus?: VolunteerStatus
 }
 
+function getDisplayStatus(status: ScanStatus): 'success' | 'warning' | 'error' | 'duplicate' {
+  return status === 'not-found' ? 'success' : status
+}
+
+function getDisplayLabel(status: ScanStatus): string {
+  return status === 'not-found' ? 'success' : status
+}
+
 const COOLDOWN_MS = 5000
 const MAX_HISTORY = 20
 
@@ -500,11 +508,13 @@ function MealScannerPage() {
                         <Badge variant="outline" className="capitalize">{item.meal}</Badge>
                         <span className={cn(
                           'text-xs font-medium',
-                          item.status === 'success' ? 'text-emerald-600' :
-                          item.status === 'warning' ? 'text-amber-700' :
-                          'text-rose-600'
+                          item.status === 'success' || item.status === 'not-found'
+                            ? 'text-emerald-600'
+                            : item.status === 'warning'
+                              ? 'text-amber-700'
+                              : 'text-rose-600'
                         )}>
-                          {item.status.replace('-', ' ')}
+                          {getDisplayLabel(item.status)}
                         </span>
                       </div>
                       <p className="text-xs text-muted-foreground">
@@ -669,15 +679,15 @@ function MealScannerPage() {
                   <div className="space-y-4">
                     <div className="rounded-3xl border border-input bg-card p-4">
                       <div className="flex items-center gap-3">
-                        {scanResult.status === 'success' ? (
+                        {getDisplayStatus(scanResult.status) === 'success' ? (
                           <CheckCircle2 className="h-5 w-5 text-emerald-600" />
-                        ) : scanResult.status === 'warning' ? (
+                        ) : getDisplayStatus(scanResult.status) === 'warning' ? (
                           <AlertTriangle className="h-5 w-5 text-amber-600" />
                         ) : (
                           <AlertTriangle className="h-5 w-5 text-rose-600" />
                         )}
                         <div>
-                          <p className="font-semibold capitalize">{scanResult.status}</p>
+                          <p className="font-semibold capitalize">{getDisplayLabel(scanResult.status)}</p>
                           <p className="text-sm text-muted-foreground">{scanResult.message}</p>
                         </div>
                       </div>
