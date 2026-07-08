@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import QRCode from 'react-qr-code'
 import { ArrowRight, Download, Mail, Search, FolderOpen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -7,11 +7,12 @@ import { Input } from '@/components/ui/input'
 import { getVolunteers, searchVolunteers, type Volunteer } from '@/lib/volunteers'
 import { getQrPayload, downloadQrPng } from '@/lib/qr-utils'
 import { loadLocalStatus, subscribeVolunteerStatus, type VolunteerStatus } from '@/lib/status'
+import { subscribeVolunteerInputs } from '@/lib/volunteer-storage'
 
 export function CustomFolder() {
-  const allVolunteers = useMemo(() => getVolunteers(), [])
+  const [allVolunteers, setAllVolunteers] = useState<Volunteer[]>(getVolunteers())
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState<Volunteer[]>(allVolunteers.slice(0, 8))
+  const [results, setResults] = useState<Volunteer[]>(allVolunteers)
   const [selected, setSelected] = useState<Volunteer | null>(allVolunteers[0] ?? null)
 
   const selectedVolunteer = selected ?? allVolunteers[0] ?? null
@@ -21,12 +22,20 @@ export function CustomFolder() {
   const qrValue = selectedVolunteer ? getQrPayload(selectedVolunteer.id) : ''
 
   useEffect(() => {
-    const found = query.trim() ? searchVolunteers(query).slice(0, 12) : allVolunteers.slice(0, 12)
+    const found = query.trim() ? searchVolunteers(query) : allVolunteers
     setResults(found)
     if (found.length > 0 && !found.some((item) => item.id === selected?.id)) {
       setSelected(found[0])
     }
   }, [query, allVolunteers, selected?.id])
+
+  useEffect(() => {
+    const unsubscribe = subscribeVolunteerInputs(() => {
+      setAllVolunteers(getVolunteers())
+    })
+
+    return unsubscribe
+  }, [])
 
   useEffect(() => {
     if (!selectedVolunteer) return
@@ -56,25 +65,27 @@ export function CustomFolder() {
               />
             </div>
 
-            <div className="grid gap-3 grid-cols-2 rounded-3xl border border-border/60 bg-background p-3 shadow-sm">
-              {results.map((volunteer) => (
-                <button
-                  key={volunteer.id}
-                  type="button"
-                  onClick={() => setSelected(volunteer)}
-                  className={`rounded-2xl px-3 py-3 text-left transition-all border-2 hover:shadow-md ${
-                    volunteer.id === selectedVolunteer?.id ? 'bg-primary/10 border-primary font-semibold' : 'border-border/40 hover:border-primary/50'
-                  }`}
-                >
-                  <div className="space-y-2">
-                    <p className="text-sm font-semibold line-clamp-2">{volunteer.name}</p>
-                    <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground">{volunteer.team}</p>
-                      <p className="font-mono text-xs text-muted-foreground">{volunteer.id}</p>
+            <div className="max-h-[520px] overflow-auto rounded-3xl border border-border/60 bg-background p-3 shadow-sm">
+              <div className="grid gap-3 grid-cols-2">
+                {results.map((volunteer) => (
+                  <button
+                    key={volunteer.id}
+                    type="button"
+                    onClick={() => setSelected(volunteer)}
+                    className={`rounded-2xl px-3 py-3 text-left transition-all border-2 hover:shadow-md ${
+                      volunteer.id === selectedVolunteer?.id ? 'bg-primary/10 border-primary font-semibold' : 'border-border/40 hover:border-primary/50'
+                    }`}
+                  >
+                    <div className="space-y-2">
+                      <p className="text-sm font-semibold line-clamp-2">{volunteer.name}</p>
+                      <div className="space-y-1">
+                        <p className="text-xs text-muted-foreground">{volunteer.team}</p>
+                        <p className="font-mono text-xs text-muted-foreground">{volunteer.id}</p>
+                      </div>
                     </div>
-                  </div>
-                </button>
-              ))}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
