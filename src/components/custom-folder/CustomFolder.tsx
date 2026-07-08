@@ -1,19 +1,18 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import QRCode from 'react-qr-code'
-import { ArrowRight, Download, FolderOpen, Info, Mail, MapPin, Search } from 'lucide-react'
+import { ArrowRight, Download, Mail, Search, FolderOpen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { getVolunteers, searchVolunteers, type Volunteer } from '@/lib/volunteers'
 import { getQrPayload, downloadQrPng } from '@/lib/qr-utils'
 import { loadLocalStatus, subscribeVolunteerStatus, type VolunteerStatus } from '@/lib/status'
-
-const GOVT_ID_TYPES = ['Aadhar', 'Passport', 'Voter ID', 'Driving Licence'] as const
+import { subscribeVolunteerInputs } from '@/lib/volunteer-storage'
 
 export function CustomFolder() {
-  const allVolunteers = useMemo(() => getVolunteers(), [])
+  const [allVolunteers, setAllVolunteers] = useState<Volunteer[]>(getVolunteers())
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState<Volunteer[]>(allVolunteers.slice(0, 8))
+  const [results, setResults] = useState<Volunteer[]>(allVolunteers)
   const [selected, setSelected] = useState<Volunteer | null>(allVolunteers[0] ?? null)
 
   const selectedVolunteer = selected ?? allVolunteers[0] ?? null
@@ -21,24 +20,22 @@ export function CustomFolder() {
     loadLocalStatus(selectedVolunteer?.id ?? allVolunteers[0]?.id ?? ''),
   )
   const qrValue = selectedVolunteer ? getQrPayload(selectedVolunteer.id) : ''
-  const govtIdType = GOVT_ID_TYPES[selectedVolunteer ? selectedVolunteer.id.length % GOVT_ID_TYPES.length : 0]
-  const govtIdNo = selectedVolunteer ? `${selectedVolunteer.id}-${selectedVolunteer.phone.slice(-4)}` : 'N/A'
-  const address = selectedVolunteer ? `${selectedVolunteer.team} Camp, Event Grounds` : 'N/A'
-  const initials = selectedVolunteer?.name
-    ? selectedVolunteer.name
-        .split(' ')
-        .map((part) => part[0])
-        .slice(0, 2)
-        .join('')
-    : '??'
 
   useEffect(() => {
-    const found = query.trim() ? searchVolunteers(query).slice(0, 12) : allVolunteers.slice(0, 12)
+    const found = query.trim() ? searchVolunteers(query) : allVolunteers
     setResults(found)
     if (found.length > 0 && !found.some((item) => item.id === selected?.id)) {
       setSelected(found[0])
     }
   }, [query, allVolunteers, selected?.id])
+
+  useEffect(() => {
+    const unsubscribe = subscribeVolunteerInputs(() => {
+      setAllVolunteers(getVolunteers())
+    })
+
+    return unsubscribe
+  }, [])
 
   useEffect(() => {
     if (!selectedVolunteer) return
@@ -68,27 +65,27 @@ export function CustomFolder() {
               />
             </div>
 
-            <div className="grid gap-3 rounded-3xl border border-border/60 bg-background p-3 shadow-sm md:grid-cols-2">
-              {results.map((volunteer) => (
-                <button
-                  key={volunteer.id}
-                  type="button"
-                  onClick={() => setSelected(volunteer)}
-                  className={`rounded-2xl border-2 px-3 py-3 text-left transition-all hover:shadow-md ${
-                    volunteer.id === selectedVolunteer?.id
-                      ? 'border-primary bg-primary/10 font-semibold'
-                      : 'border-border/40 hover:border-primary/50'
-                  }`}
-                >
-                  <div className="space-y-2">
-                    <p className="text-sm font-semibold line-clamp-2">{volunteer.name}</p>
-                    <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground">{volunteer.team}</p>
-                      <p className="font-mono text-xs text-muted-foreground">{volunteer.id}</p>
+            <div className="max-h-[520px] overflow-auto rounded-3xl border border-border/60 bg-background p-3 shadow-sm">
+              <div className="grid gap-3 grid-cols-2">
+                {results.map((volunteer) => (
+                  <button
+                    key={volunteer.id}
+                    type="button"
+                    onClick={() => setSelected(volunteer)}
+                    className={`rounded-2xl px-3 py-3 text-left transition-all border-2 hover:shadow-md ${
+                      volunteer.id === selectedVolunteer?.id ? 'bg-primary/10 border-primary font-semibold' : 'border-border/40 hover:border-primary/50'
+                    }`}
+                  >
+                    <div className="space-y-2">
+                      <p className="text-sm font-semibold line-clamp-2">{volunteer.name}</p>
+                      <div className="space-y-1">
+                        <p className="text-xs text-muted-foreground">{volunteer.team}</p>
+                        <p className="font-mono text-xs text-muted-foreground">{volunteer.id}</p>
+                      </div>
                     </div>
-                  </div>
-                </button>
-              ))}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -97,11 +94,15 @@ export function CustomFolder() {
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-lg font-semibold text-primary">
-                    {initials}
+                    {selectedVolunteer?.name
+                      .split(' ')
+                      .map((part) => part[0])
+                      .slice(0, 2)
+                      .join('')}
                   </div>
                   <div>
                     <p className="text-base font-semibold">{selectedVolunteer?.name ?? 'Participant Name'}</p>
-                    <p className="text-sm text-muted-foreground">{selectedVolunteer?.role ?? 'Volunteer'}</p>
+                    <p className="text-sm text-muted-foreground">Volunteers · Volunteer</p>
                   </div>
                 </div>
                 <div className="rounded-full border border-muted px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
@@ -143,50 +144,6 @@ export function CustomFolder() {
               </Button>
 
               <div className="mt-6 space-y-3">
-                <div className="flex items-center gap-2 text-sm font-semibold">
-                  <Info className="h-4 w-4 text-primary" />
-                  Participant details
-                </div>
-                <div className="grid gap-3">
-                  <div className="grid gap-1 text-sm">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Name</div>
-                    <div className="rounded-2xl bg-muted/10 px-3 py-2 text-sm">{selectedVolunteer?.name ?? 'N/A'}</div>
-                  </div>
-                  <div className="grid gap-1 text-sm">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Participant ID</div>
-                    <div className="rounded-2xl bg-muted/10 px-3 py-2 font-mono">{selectedVolunteer?.id ?? 'N/A'}</div>
-                  </div>
-                  <div className="grid gap-1 text-sm">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Team Name</div>
-                    <div className="rounded-2xl bg-muted/10 px-3 py-2">{selectedVolunteer?.team ?? 'N/A'}</div>
-                  </div>
-                  <div className="grid gap-1 text-sm">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Contact No.</div>
-                    <div className="rounded-2xl bg-muted/10 px-3 py-2">{selectedVolunteer?.phone ?? 'N/A'}</div>
-                  </div>
-                  <div className="grid gap-1 text-sm">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Info</div>
-                    <div className="rounded-2xl bg-muted/10 px-3 py-2">{selectedVolunteer?.role ?? 'N/A'}</div>
-                  </div>
-                  <div className="grid gap-1 text-sm">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Address</div>
-                    <div className="flex items-center gap-2 rounded-2xl bg-muted/10 px-3 py-2 text-sm">
-                      <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
-                      {address}
-                    </div>
-                  </div>
-                  <div className="grid gap-1 text-sm">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Govt ID</div>
-                    <div className="rounded-2xl bg-muted/10 px-3 py-2">{govtIdType}</div>
-                  </div>
-                  <div className="grid gap-1 text-sm">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">ID No.</div>
-                    <div className="rounded-2xl bg-muted/10 px-3 py-2">{govtIdNo}</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6 space-y-3">
                 <div className="text-sm font-medium">Attendance days</div>
                 <div className="rounded-2xl border border-border/70 bg-muted/20 px-4 py-3 text-sm">
                   {(status?.attendanceDays ?? 0)} / 5 days
@@ -210,9 +167,7 @@ export function CustomFolder() {
                   >
                     <div
                       className={`h-4 w-4 rounded-full ${
-                        active
-                          ? 'flex items-center justify-center bg-emerald-500 text-white'
-                          : 'border border-primary/40 bg-transparent'
+                        active ? 'bg-emerald-500 text-white flex items-center justify-center' : 'border border-primary/40 bg-transparent'
                       }`}
                     >
                       {active ? '✓' : ''}
