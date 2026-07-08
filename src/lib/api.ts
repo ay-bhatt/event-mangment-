@@ -162,6 +162,19 @@ export async function apiValidateScan(
   })
 }
 
+export async function apiCheckOut(externalPassId: string, notes?: string) {
+  return request<{
+    success: boolean
+    isDuplicate?: boolean
+    message: string
+    status: VolunteerStatus
+    name?: string | null
+  }>(`/attendance/check-out`, {
+    method: 'POST',
+    body: JSON.stringify({ externalPassId, notes }),
+  })
+}
+
 // ---------------------------------------------------------------------------
 // Attendance
 // ---------------------------------------------------------------------------

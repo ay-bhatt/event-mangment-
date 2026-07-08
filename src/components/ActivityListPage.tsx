@@ -215,6 +215,8 @@ export function ActivityListPage({ type }: Props) {
           </div>
         </form>
       </div>
+      
+      {/* End of page content */}
     </div>
   )
 }

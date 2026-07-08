@@ -18,6 +18,8 @@ import { Route as AuthenticatedVolunteersRouteImport } from './routes/_authentic
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedScannerRouteImport } from './routes/_authenticated/scanner'
 import { Route as AuthenticatedMealScannerRouteImport } from './routes/_authenticated/meal-scanner'
+import { Route as AuthenticatedExitRouteImport } from './routes/_authenticated/exit'
+import { Route as AuthenticatedEntryRouteImport } from './routes/_authenticated/entry'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCustomFolderRouteImport } from './routes/_authenticated/custom-folder'
 import { Route as AuthenticatedCulturalRouteImport } from './routes/_authenticated/cultural'
@@ -69,6 +71,16 @@ const AuthenticatedMealScannerRoute =
     path: '/meal-scanner',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedExitRoute = AuthenticatedExitRouteImport.update({
+  id: '/exit',
+  path: '/exit',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedEntryRoute = AuthenticatedEntryRouteImport.update({
+  id: '/entry',
+  path: '/entry',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -103,6 +115,8 @@ export interface FileRoutesByFullPath {
   '/cultural': typeof AuthenticatedCulturalRoute
   '/custom-folder': typeof AuthenticatedCustomFolderRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/entry': typeof AuthenticatedEntryRoute
+  '/exit': typeof AuthenticatedExitRoute
   '/meal-scanner': typeof AuthenticatedMealScannerRoute
   '/scanner': typeof AuthenticatedScannerRoute
   '/settings': typeof AuthenticatedSettingsRoute
@@ -118,6 +132,8 @@ export interface FileRoutesByTo {
   '/cultural': typeof AuthenticatedCulturalRoute
   '/custom-folder': typeof AuthenticatedCustomFolderRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/entry': typeof AuthenticatedEntryRoute
+  '/exit': typeof AuthenticatedExitRoute
   '/meal-scanner': typeof AuthenticatedMealScannerRoute
   '/scanner': typeof AuthenticatedScannerRoute
   '/settings': typeof AuthenticatedSettingsRoute
@@ -135,6 +151,8 @@ export interface FileRoutesById {
   '/_authenticated/cultural': typeof AuthenticatedCulturalRoute
   '/_authenticated/custom-folder': typeof AuthenticatedCustomFolderRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/entry': typeof AuthenticatedEntryRoute
+  '/_authenticated/exit': typeof AuthenticatedExitRoute
   '/_authenticated/meal-scanner': typeof AuthenticatedMealScannerRoute
   '/_authenticated/scanner': typeof AuthenticatedScannerRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
@@ -152,6 +170,8 @@ export interface FileRouteTypes {
     | '/cultural'
     | '/custom-folder'
     | '/dashboard'
+    | '/entry'
+    | '/exit'
     | '/meal-scanner'
     | '/scanner'
     | '/settings'
@@ -167,6 +187,8 @@ export interface FileRouteTypes {
     | '/cultural'
     | '/custom-folder'
     | '/dashboard'
+    | '/entry'
+    | '/exit'
     | '/meal-scanner'
     | '/scanner'
     | '/settings'
@@ -183,6 +205,8 @@ export interface FileRouteTypes {
     | '/_authenticated/cultural'
     | '/_authenticated/custom-folder'
     | '/_authenticated/dashboard'
+    | '/_authenticated/entry'
+    | '/_authenticated/exit'
     | '/_authenticated/meal-scanner'
     | '/_authenticated/scanner'
     | '/_authenticated/settings'
@@ -264,6 +288,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMealScannerRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/exit': {
+      id: '/_authenticated/exit'
+      path: '/exit'
+      fullPath: '/exit'
+      preLoaderRoute: typeof AuthenticatedExitRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/entry': {
+      id: '/_authenticated/entry'
+      path: '/entry'
+      fullPath: '/entry'
+      preLoaderRoute: typeof AuthenticatedEntryRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -307,6 +345,8 @@ interface AuthenticatedRouteChildren {
   AuthenticatedCulturalRoute: typeof AuthenticatedCulturalRoute
   AuthenticatedCustomFolderRoute: typeof AuthenticatedCustomFolderRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedEntryRoute: typeof AuthenticatedEntryRoute
+  AuthenticatedExitRoute: typeof AuthenticatedExitRoute
   AuthenticatedMealScannerRoute: typeof AuthenticatedMealScannerRoute
   AuthenticatedScannerRoute: typeof AuthenticatedScannerRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
@@ -320,6 +360,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCulturalRoute: AuthenticatedCulturalRoute,
   AuthenticatedCustomFolderRoute: AuthenticatedCustomFolderRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedEntryRoute: AuthenticatedEntryRoute,
+  AuthenticatedExitRoute: AuthenticatedExitRoute,
   AuthenticatedMealScannerRoute: AuthenticatedMealScannerRoute,
   AuthenticatedScannerRoute: AuthenticatedScannerRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
