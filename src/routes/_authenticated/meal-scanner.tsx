@@ -40,6 +40,7 @@ import {
   loadVolunteerStatus,
   subscribeVolunteerStatus,
   saveLocalStatus,
+  updateVolunteerStatus,
   type MealKey,
   type VolunteerStatus,
   MAX_MEAL_PASSES,
@@ -327,8 +328,8 @@ function MealScannerPage() {
         playSuccessTone()
         toast.success(message)
       } catch {
-        const status = await loadVolunteerStatus(volunteer.id)
-        const remaining = getMealRemaining(status, currentMeal)
+        const localStatus = await loadVolunteerStatus(volunteer.id)
+        const remaining = getMealRemaining(localStatus, currentMeal)
         if (remaining <= 0) {
           const message = `No remaining ${currentMeal} passes for this participant.`
           setScanResult({
@@ -337,11 +338,38 @@ function MealScannerPage() {
             message,
             meal: currentMeal,
             timestamp: new Date().toLocaleTimeString(),
-            updatedStatus: status,
+            updatedStatus: localStatus,
           })
           return
         }
-        toast.error('Could not reach server. Meal not recorded.')
+
+        const updatedStatus = {
+          ...localStatus,
+          [`${currentMeal}Used`]: getMealUsed(localStatus, currentMeal) + 1,
+        }
+
+        await updateVolunteerStatus(volunteer.id, updatedStatus)
+
+        const message = `${volunteer.name} recorded locally for ${currentMeal}. Sync when the server is available.`
+        setScanResult({
+          participant: volunteer,
+          status: 'success',
+          message,
+          meal: currentMeal,
+          timestamp: new Date().toLocaleTimeString(),
+          updatedStatus,
+        })
+        addHistoryItem({
+          id: `${Date.now()}-offline`,
+          timestamp: new Date().toLocaleTimeString(),
+          participantId: volunteer.id,
+          participantName: volunteer.name,
+          team: volunteer.team,
+          meal: currentMeal,
+          status: 'success',
+          message,
+        })
+        toast.success(message)
       }
     },
     [currentMeal, addHistoryItem],
