@@ -6,7 +6,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { getVolunteers, searchVolunteers, type Volunteer } from '@/lib/volunteers'
 import { getQrPayload, downloadQrPng } from '@/lib/qr-utils'
-import { loadLocalStatus, subscribeVolunteerStatus, type VolunteerStatus } from '@/lib/status'
+import {
+  loadLocalStatus,
+  subscribeVolunteerStatus,
+  MEAL_KEYS,
+  MAX_MEAL_PASSES,
+  getMealRemaining,
+  getMealUsed,
+  getTotalMealsRemaining,
+  getTotalMealsUsed,
+  type VolunteerStatus,
+} from '@/lib/status'
 import { subscribeVolunteerInputs } from '@/lib/volunteer-storage'
 
 export function CustomFolder() {
@@ -19,7 +29,19 @@ export function CustomFolder() {
   const [status, setStatus] = useState<VolunteerStatus>(() =>
     loadLocalStatus(selectedVolunteer?.id ?? allVolunteers[0]?.id ?? ''),
   )
+  const [showStatistics, setShowStatistics] = useState(false)
   const qrValue = selectedVolunteer ? getQrPayload(selectedVolunteer.id) : ''
+
+  const mealStats = MEAL_KEYS.map((meal) => {
+    const used = getMealUsed(status, meal)
+    return {
+      meal,
+      label: meal[0].toUpperCase() + meal.slice(1),
+      used,
+      remaining: getMealRemaining(status, meal),
+      percent: Math.round((used / MAX_MEAL_PASSES) * 100),
+    }
+  })
 
   useEffect(() => {
     const found = query.trim() ? searchVolunteers(query) : allVolunteers
@@ -40,6 +62,7 @@ export function CustomFolder() {
   useEffect(() => {
     if (!selectedVolunteer) return
     setStatus(loadLocalStatus(selectedVolunteer.id))
+    setShowStatistics(false)
     const unsubscribe = subscribeVolunteerStatus(selectedVolunteer.id, setStatus)
     return () => unsubscribe?.()
   }, [selectedVolunteer?.id])
@@ -138,10 +161,60 @@ export function CustomFolder() {
                 </Button>
               </div>
 
-              <Button variant="outline" className="mt-4 w-full gap-2 justify-center">
+              <Button
+                variant="outline"
+                className="mt-4 w-full gap-2 justify-center"
+                onClick={() => selectedVolunteer && setShowStatistics(true)}
+              >
                 <ArrowRight className="h-4 w-4" />
                 View Statistics
               </Button>
+
+              {showStatistics ? (
+                <div className="mt-4 rounded-3xl border border-border/60 bg-background p-4 shadow-sm">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-semibold">Participant Meal Statistics</p>
+                      <p className="text-xs text-muted-foreground">Real-time meal usage for this participant.</p>
+                    </div>
+                    <Button size="sm" variant="ghost" onClick={() => setShowStatistics(false)}>
+                      Back
+                    </Button>
+                  </div>
+
+                  <div className="mt-4 grid gap-3">
+                    {mealStats.map((item) => (
+                      <div key={item.meal} className="rounded-2xl border border-input bg-card p-4">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="font-medium">{item.label}</p>
+                          <span className="text-sm text-muted-foreground">{item.remaining} remaining</span>
+                        </div>
+                        <p className="mt-2 text-sm">
+                          {item.label} Passes Used: {item.used} / {MAX_MEAL_PASSES}
+                        </p>
+                        <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-200">
+                          <div className="h-full rounded-full bg-primary" style={{ width: `${item.percent}%` }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    <div className="rounded-2xl border border-input bg-card p-4">
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                        Total Meals Used
+                      </p>
+                      <p className="mt-2 text-sm">{getTotalMealsUsed(status)} / {MEAL_KEYS.length * MAX_MEAL_PASSES}</p>
+                    </div>
+                    <div className="rounded-2xl border border-input bg-card p-4">
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                        Total Meals Remaining
+                      </p>
+                      <p className="mt-2 text-sm">{getTotalMealsRemaining(status)}</p>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
 
               <div className="mt-6 space-y-3">
                 <div className="text-sm font-medium">Attendance days</div>
@@ -158,6 +231,7 @@ export function CustomFolder() {
                   { label: 'Kit Received', active: status?.kitReceived },
                   { label: 'Certificate Received', active: status?.certificateReceived },
                   { label: 'Entry Verified', active: status?.entryVerified },
+                  { label: 'Exit Verified', active: status?.exitVerified },
                 ].map(({ label, active }) => (
                   <div
                     key={label}
