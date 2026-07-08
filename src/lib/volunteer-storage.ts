@@ -28,6 +28,8 @@ export function loadVolunteerRegistry(): IdRegistry {
   return loadJson<IdRegistry>(REGISTRY_KEY, registryFile as IdRegistry)
 }
 
+const volunteerListeners = new Set<() => void>()
+
 export function saveVolunteerInputs(entries: VolunteerInput[]): void {
   localStorage.setItem(VOLUNTEERS_KEY, JSON.stringify(entries))
 }
@@ -36,11 +38,23 @@ export function saveVolunteerRegistry(registry: IdRegistry): void {
   localStorage.setItem(REGISTRY_KEY, JSON.stringify(registry))
 }
 
+function notifyVolunteerInputsChanged(): void {
+  volunteerListeners.forEach((listener) => listener())
+}
+
 export function persistVolunteerInputs(entries: VolunteerInput[]): void {
   saveVolunteerInputs(entries)
   const prefix = loadSettings().qrPrefix.trim() || 'JATRA-VOL'
   const { registry } = assignStableIds(entries, loadVolunteerRegistry(), prefix)
   saveVolunteerRegistry(registry)
+  notifyVolunteerInputsChanged()
+}
+
+export function subscribeVolunteerInputs(onChange: () => void): () => void {
+  volunteerListeners.add(onChange)
+  return () => {
+    volunteerListeners.delete(onChange)
+  }
 }
 
 export function loadVolunteersWithIds() {
