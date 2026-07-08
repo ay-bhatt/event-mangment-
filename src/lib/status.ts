@@ -10,6 +10,7 @@ export const STATUS_FIELDS = [
   { key: 'kitReceived', label: 'Kit Received' },
   { key: 'certificateReceived', label: 'Certificate Received' },
   { key: 'entryVerified', label: 'Entry Verified' },
+  { key: 'exitVerified', label: 'Exit Verified' },
 ] as const
 
 export const MEAL_KEYS = ['breakfast', 'lunch', 'dinner'] as const
@@ -40,6 +41,7 @@ export const EMPTY_STATUS: VolunteerStatus = {
   kitReceived: false,
   certificateReceived: false,
   entryVerified: false,
+  exitVerified: false,
 }
 
 const LOCAL_PREFIX = 'caumas_status_'
@@ -87,6 +89,7 @@ function normalizeStatus(raw: Record<string, unknown> | null): VolunteerStatus {
     kitReceived: Boolean(raw.kitReceived),
     certificateReceived: Boolean(raw.certificateReceived),
     entryVerified: Boolean(raw.entryVerified),
+    exitVerified: Boolean(raw.exitVerified),
   }
 }
 
