@@ -42,7 +42,7 @@ export const EMPTY_STATUS: VolunteerStatus = {
   entryVerified: false,
 }
 
-const LOCAL_PREFIX = 'jatra_status_'
+const LOCAL_PREFIX = 'caumas_status_'
 const statusCache = new Map<string, VolunteerStatus>()
 const listeners = new Map<string, Set<(s: VolunteerStatus) => void>>()
 

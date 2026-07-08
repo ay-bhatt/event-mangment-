@@ -14,17 +14,17 @@ const activitySources = [
   {
     name: 'adventure',
     path: path.join(root, 'src/data/activity.json'),
-    prefix: 'JATRA-ADV',
+    prefix: '-ADV',
   },
   {
     name: 'cultural',
     path: path.join(root, 'src/data/cultural.json'),
-    prefix: 'JATRA-CUL',
+    prefix: '-CUL',
   },
   {
     name: 'workshop',
     path: path.join(root, 'src/data/workshop.json'),
-    prefix: 'JATRA-WSH',
+    prefix: '-WSH',
   },
 ]
 const registryPath = path.join(root, 'src/data/id-registry.json')

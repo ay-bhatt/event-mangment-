@@ -35,5 +35,5 @@ export const env = {
       ? corsOrigin
       : Array.from(new Set([...corsOrigin, 'http://localhost:5173', 'http://127.0.0.1:5173'])),
   defaultEventSlug: process.env.DEFAULT_EVENT_SLUG || 'jatra-2026',
-  defaultEventName: process.env.DEFAULT_EVENT_NAME || 'Jatra Festival 2026',
+  defaultEventName: process.env.DEFAULT_EVENT_NAME || ' Festival ',
 }

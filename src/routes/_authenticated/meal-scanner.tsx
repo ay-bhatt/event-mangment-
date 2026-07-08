@@ -76,11 +76,13 @@ type ScanResult = {
 }
 
 function getDisplayStatus(status: ScanStatus): 'success' | 'warning' | 'error' | 'duplicate' {
-  return status === 'not-found' ? 'success' : status
+  return status === 'not-found' ? 'warning' : status
 }
 
 function getDisplayLabel(status: ScanStatus): string {
-  return status === 'not-found' ? 'success' : status
+  if (status === 'not-found') return 'not found'
+  if (status === 'duplicate') return 'duplicate'
+  return status
 }
 
 const COOLDOWN_MS = 5000

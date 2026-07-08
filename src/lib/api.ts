@@ -4,7 +4,6 @@ import {
   getLoginHistoryId,
   getStoredUser,
   setAuthSession,
-  type AuthUser,
 } from '@/lib/session'
 
 import type { VolunteerStatus } from '@/lib/status'
@@ -44,7 +43,7 @@ async function request<T>(
 // Auth
 // ---------------------------------------------------------------------------
 
-export async function apiLogin(username: string, password: string) {
+export async function apiLogin(_username: string, _password: string) {
   const user = getStoredUser()!
   const data = {
     success: true,

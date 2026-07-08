@@ -110,6 +110,12 @@ function DashboardPage() {
       color: 'pastel-card-lavender',
     },
     {
+      title: 'Custom folder',
+      desc: 'Participant QR and details page',
+      to: '/custom-folder',
+      color: 'pastel-card-slate',
+    },
+    {
       title: 'Event settings',
       desc: 'Name, QR prefix, email template',
       to: '/settings',
@@ -220,6 +226,36 @@ function DashboardPage() {
             ))}
           </CardContent>
         </Card>
+      )}
+
+      {view === 'overview' && (
+        <div className="grid gap-4 lg:grid-cols-[1.4fr_0.8fr]">
+          <div>
+            <Card className="rounded-3xl border-border/40 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-lg">Custom Folder</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Open the Custom Folder page to view participant QR codes and full participant details.
+                </p>
+                <Button asChild className="w-full justify-center">
+                  <Link to="/custom-folder">Go to Custom Folder</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="space-y-4">
+            <Card className="rounded-3xl border-border/40 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-lg">Quick tools</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-muted-foreground">
+                Use this panel to add fast actions for selected participants, download bulk QR codes, or navigate to the registration flow.
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       )}
 
       {view === 'activities' && (

@@ -21,9 +21,9 @@ const activityData: Record<ActivityType, ActivityInput[]> = {
 }
 
 const activityPrefix: Record<ActivityType, string> = {
-  adventure: 'JATRA-ADV',
-  cultural: 'JATRA-CUL',
-  workshop: 'JATRA-WSH',
+  adventure: 'EVENT-ADV',
+  cultural: 'EVENT-CUL',
+  workshop: 'EVENT-WSH',
 }
 
 const activityTitles: Record<ActivityType, string> = {
@@ -38,7 +38,7 @@ const activitySubtitles: Record<ActivityType, string> = {
   workshop: 'Manage workshop entries, generate QR passes and verify participation.',
 }
 
-const STORAGE_PREFIX = 'jatra_activity_entries_'
+const STORAGE_PREFIX = 'caumas_activity_entries_'
 
 function getPrefix(type: ActivityType) {
   return activityPrefix[type]

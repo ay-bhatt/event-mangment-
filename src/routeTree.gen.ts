@@ -19,6 +19,7 @@ import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedScannerRouteImport } from './routes/_authenticated/scanner'
 import { Route as AuthenticatedMealScannerRouteImport } from './routes/_authenticated/meal-scanner'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedCustomFolderRouteImport } from './routes/_authenticated/custom-folder'
 import { Route as AuthenticatedCulturalRouteImport } from './routes/_authenticated/cultural'
 import { Route as AuthenticatedAdventureRouteImport } from './routes/_authenticated/adventure'
 import { Route as AuthenticatedCheckIdRouteImport } from './routes/_authenticated/check.$id'
@@ -73,6 +74,12 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedCustomFolderRoute =
+  AuthenticatedCustomFolderRouteImport.update({
+    id: '/custom-folder',
+    path: '/custom-folder',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedCulturalRoute = AuthenticatedCulturalRouteImport.update({
   id: '/cultural',
   path: '/cultural',
@@ -94,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/adventure': typeof AuthenticatedAdventureRoute
   '/cultural': typeof AuthenticatedCulturalRoute
+  '/custom-folder': typeof AuthenticatedCustomFolderRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/meal-scanner': typeof AuthenticatedMealScannerRoute
   '/scanner': typeof AuthenticatedScannerRoute
@@ -108,6 +116,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/adventure': typeof AuthenticatedAdventureRoute
   '/cultural': typeof AuthenticatedCulturalRoute
+  '/custom-folder': typeof AuthenticatedCustomFolderRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/meal-scanner': typeof AuthenticatedMealScannerRoute
   '/scanner': typeof AuthenticatedScannerRoute
@@ -124,6 +133,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_authenticated/adventure': typeof AuthenticatedAdventureRoute
   '/_authenticated/cultural': typeof AuthenticatedCulturalRoute
+  '/_authenticated/custom-folder': typeof AuthenticatedCustomFolderRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/meal-scanner': typeof AuthenticatedMealScannerRoute
   '/_authenticated/scanner': typeof AuthenticatedScannerRoute
@@ -140,6 +150,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/adventure'
     | '/cultural'
+    | '/custom-folder'
     | '/dashboard'
     | '/meal-scanner'
     | '/scanner'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/adventure'
     | '/cultural'
+    | '/custom-folder'
     | '/dashboard'
     | '/meal-scanner'
     | '/scanner'
@@ -169,6 +181,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/_authenticated/adventure'
     | '/_authenticated/cultural'
+    | '/_authenticated/custom-folder'
     | '/_authenticated/dashboard'
     | '/_authenticated/meal-scanner'
     | '/_authenticated/scanner'
@@ -258,6 +271,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/custom-folder': {
+      id: '/_authenticated/custom-folder'
+      path: '/custom-folder'
+      fullPath: '/custom-folder'
+      preLoaderRoute: typeof AuthenticatedCustomFolderRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/cultural': {
       id: '/_authenticated/cultural'
       path: '/cultural'
@@ -285,6 +305,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteChildren {
   AuthenticatedAdventureRoute: typeof AuthenticatedAdventureRoute
   AuthenticatedCulturalRoute: typeof AuthenticatedCulturalRoute
+  AuthenticatedCustomFolderRoute: typeof AuthenticatedCustomFolderRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedMealScannerRoute: typeof AuthenticatedMealScannerRoute
   AuthenticatedScannerRoute: typeof AuthenticatedScannerRoute
@@ -297,6 +318,7 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAdventureRoute: AuthenticatedAdventureRoute,
   AuthenticatedCulturalRoute: AuthenticatedCulturalRoute,
+  AuthenticatedCustomFolderRoute: AuthenticatedCustomFolderRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedMealScannerRoute: AuthenticatedMealScannerRoute,
   AuthenticatedScannerRoute: AuthenticatedScannerRoute,

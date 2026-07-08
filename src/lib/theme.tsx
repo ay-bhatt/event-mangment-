@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from 'react'
 
-export type Theme = 'light' | 'dark'
+export type Theme = 'light'
 
 const STORAGE_KEY = 'caumas-theme'
 
@@ -21,22 +21,25 @@ const ThemeContext = createContext<ThemeContextValue | null>(null)
 
 function getInitialTheme(): Theme {
   if (typeof window === 'undefined') return 'light'
-  const stored = localStorage.getItem(STORAGE_KEY)
-  if (stored === 'dark' || stored === 'light') return stored
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark'
-    : 'light'
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY)
+    if (stored === 'light') return 'light'
+  } catch {
+    // ignore storage access issues and fall back to light mode
+  }
+  return 'light'
 }
 
 function applyTheme(theme: Theme) {
+  if (typeof document === 'undefined') return
   const root = document.documentElement
-  root.classList.toggle('dark', theme === 'dark')
+  root.classList.remove('dark')
   const meta = document.querySelector('meta[name="theme-color"]')
   if (meta) {
-    meta.setAttribute(
-      'content',
-      theme === 'dark' ? '#12141c' : '#f5f5f7',
-    )
+    meta.setAttribute('content', '#f5f5f7')
+  }
+  if (theme === 'light') {
+    root.dataset.theme = 'light'
   }
 }
 
@@ -49,7 +52,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     applyTheme(theme)
-    localStorage.setItem(STORAGE_KEY, theme)
+    try {
+      window.localStorage.setItem(STORAGE_KEY, theme)
+    } catch {
+      // ignore storage write failures
+    }
   }, [theme])
 
   const setTheme = useCallback((next: Theme) => {
@@ -57,7 +64,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const toggleTheme = useCallback(() => {
-    setThemeState((current) => (current === 'dark' ? 'light' : 'dark'))
+    setThemeState('light')
   }, [])
 
   return (

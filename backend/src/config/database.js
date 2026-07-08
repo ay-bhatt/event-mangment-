@@ -27,6 +27,13 @@ export function getPool() {
   return pool
 }
 
+export async function closePool() {
+  if (pool) {
+    await pool.end()
+    pool = null
+  }
+}
+
 export async function query(sql, params = []) {
   const [rows] = await getPool().execute(sql, params)
   return rows
@@ -35,6 +42,22 @@ export async function query(sql, params = []) {
 export async function queryOne(sql, params = []) {
   const rows = await query(sql, params)
   return rows[0] ?? null
+}
+
+export async function withTransaction(callback) {
+  const connection = await getPool().getConnection()
+  await connection.beginTransaction()
+
+  try {
+    const result = await callback(connection)
+    await connection.commit()
+    connection.release()
+    return result
+  } catch (error) {
+    await connection.rollback()
+    connection.release()
+    throw error
+  }
 }
 
 export async function testDatabaseConnection() {
