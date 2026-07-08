@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
-import { Moon, Sun } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -14,8 +13,6 @@ import {
   saveSettings,
   type AppSettings,
 } from '@/lib/settings'
-import { useTheme } from '@/lib/theme'
-import { cn } from '@/lib/utils'
 
 export const Route = createFileRoute('/_authenticated/settings')({
   component: SettingsPage,
@@ -23,14 +20,21 @@ export const Route = createFileRoute('/_authenticated/settings')({
 
 function SettingsPage() {
   const [settings, setSettings] = useState<AppSettings>(loadSettings)
-  const { theme, setTheme } = useTheme()
 
   const update = <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => {
     setSettings((s) => ({ ...s, [key]: value }))
   }
 
   const onSave = () => {
-    saveSettings(settings)
+    const normalized = {
+      ...settings,
+      eventName: settings.eventName.trim(),
+      qrPrefix: settings.qrPrefix.trim(),
+      emailSubject: settings.emailSubject.trim(),
+      emailMessage: settings.emailMessage.trim(),
+    }
+    setSettings(normalized)
+    saveSettings(normalized)
     toast.success('Settings saved')
   }
 
@@ -45,42 +49,12 @@ function SettingsPage() {
 
       <Card className="rounded-3xl border-border/60">
         <CardHeader>
-          <CardTitle className="text-lg">Appearance</CardTitle>
+          <CardTitle className="text-lg">Interface</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="mb-4 text-sm text-muted-foreground">
-            Choose light pastel mode or dark library dashboard theme.
+          <p className="text-sm text-muted-foreground">
+            The app uses a consistent light interface designed for reliable event-day operations.
           </p>
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={() => setTheme('light')}
-              className={cn(
-                'little-box flex-col items-start gap-3 !py-5',
-                theme === 'light' && 'little-box-active',
-              )}
-            >
-              <Sun className="h-5 w-5" />
-              <div className="text-left">
-                <p className="font-semibold">Light mode</p>
-                <p className="text-xs opacity-80">Pastel cards & soft UI</p>
-              </div>
-            </button>
-            <button
-              type="button"
-              onClick={() => setTheme('dark')}
-              className={cn(
-                'little-box flex-col items-start gap-3 !py-5',
-                theme === 'dark' && 'little-box-active',
-              )}
-            >
-              <Moon className="h-5 w-5" />
-              <div className="text-left">
-                <p className="font-semibold">Dark mode</p>
-                <p className="text-xs opacity-80">Navy & gold accent</p>
-              </div>
-            </button>
-          </div>
         </CardContent>
       </Card>
 
@@ -105,8 +79,7 @@ function SettingsPage() {
               onChange={(e) => update('qrPrefix', e.target.value)}
             />
             <p className="text-xs text-muted-foreground">
-              IDs are generated as {settings.qrPrefix}-001,{' '}
-              {settings.qrPrefix}-002, …
+              IDs are generated as {settings.qrPrefix}-001, {settings.qrPrefix}-002, …
             </p>
           </div>
         </CardContent>
