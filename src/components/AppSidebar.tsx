@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link, useRouterState } from '@tanstack/react-router'
 import {
   Compass,
@@ -14,16 +15,27 @@ import {
 } from 'lucide-react'
 import { CaumasBrand } from '@/components/CaumasBrand'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { useAuth } from '@/lib/auth'
 import { cn } from '@/lib/utils'
+import {
+  getStoredPageTitle,
+  getStoredPageTitles,
+  saveStoredPageTitle,
+  subscribeStoredPageTitles,
+  type PageTitleKey,
+} from '@/lib/page-titles'
 
-const navItems = [
+const renameablePages: Array<{ to: string; key: PageTitleKey }> = [
+  { to: '/volunteers', key: 'volunteers' },
+  { to: '/adventure', key: 'adventure' },
+  { to: '/custom-folder', key: 'custom-folder' },
+  { to: '/cultural', key: 'cultural' },
+  { to: '/workshop', key: 'workshop' },
+]
+
+const staticNavItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { to: '/volunteers', label: 'Volunteers', icon: Users },
-  { to: '/adventure', label: 'Adventure', icon: Compass },
-  { to: '/custom-folder', label: 'Custom Folder', icon: FolderOpen },
-  { to: '/cultural', label: 'Cultural', icon: Music },
-  { to: '/workshop', label: 'Workshop', icon: Star },
   { to: '/entry', label: 'Entry', icon: LogIn },
   { to: '/exit', label: 'Exit', icon: LogOut },
   { to: '/scanner', label: 'QR Scanner', icon: ScanLine },
@@ -34,6 +46,46 @@ const navItems = [
 export function AppSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const { logout } = useAuth()
+  const [pageTitles, setPageTitles] = useState<Record<PageTitleKey, string>>(() => getStoredPageTitles())
+  const [editingKey, setEditingKey] = useState<PageTitleKey | null>(null)
+  const [editingTitle, setEditingTitle] = useState('')
+
+  useEffect(() => {
+    const unsubscribe = subscribeStoredPageTitles(() => {
+      setPageTitles(getStoredPageTitles())
+    })
+    return unsubscribe
+  }, [])
+
+  const setRenameTitle = (key: PageTitleKey) => {
+    setEditingKey(key)
+    setEditingTitle(pageTitles[key])
+  }
+
+  const saveRenameTitle = () => {
+    if (!editingKey) return
+    saveStoredPageTitle(editingKey, editingTitle)
+    setPageTitles((prev) => ({ ...prev, [editingKey]: editingTitle.trim() || getStoredPageTitle(editingKey) }))
+    setEditingKey(null)
+  }
+
+  type NavItem = {
+    to: string
+    label: string
+    icon: typeof LayoutDashboard
+    key?: PageTitleKey
+  }
+
+  const navItems: NavItem[] = [
+    { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    ...renameablePages.map(({ to, key }) => ({
+      to,
+      label: pageTitles[key],
+      icon: key === 'volunteers' ? Users : key === 'adventure' ? Compass : key === 'cultural' ? Music : key === 'workshop' ? Star : FolderOpen,
+      key,
+    })),
+    ...staticNavItems,
+  ]
 
   return (
     <aside className="sticky top-0 hidden h-screen shrink-0 w-64 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground md:flex">
@@ -42,24 +94,44 @@ export function AppSidebar() {
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
-        {navItems.map(({ to, label, icon: Icon }) => {
+        {navItems.map(({ to, label, icon: Icon, key }) => {
           const active = pathname === to || (to !== '/dashboard' && pathname.startsWith(to))
           return (
-            <Link
-              key={to}
-              to={to}
-              title={label}
-              aria-label={label}
-              className={cn(
-                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
-                active
-                  ? 'bg-primary text-primary-foreground shadow-sm'
-                  : 'text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-foreground',
+            <div key={to} className="relative">
+              {key && editingKey === key ? (
+                <div className="flex items-center gap-2 rounded-xl border border-border p-2 bg-sidebar-accent">
+                  <Input
+                    value={editingTitle}
+                    onChange={(e) => setEditingTitle(e.target.value)}
+                    className="min-w-0 flex-1 rounded-md bg-white px-2 py-1 text-sm text-slate-900"
+                  />
+                  <Button size="sm" onClick={saveRenameTitle}>
+                    Save
+                  </Button>
+                </div>
+              ) : (
+                <Link
+                  to={to}
+                  title={label}
+                  aria-label={label}
+                  className={cn(
+                    'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
+                    active
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-foreground',
+                  )}
+                  onDoubleClick={(event) => {
+                    if (!key) return
+                    event.preventDefault()
+                    event.stopPropagation()
+                    setRenameTitle(key)
+                  }}
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  {label}
+                </Link>
               )}
-            >
-              <Icon className="h-4 w-4 shrink-0" />
-              {label}
-            </Link>
+            </div>
           )
         })}
       </nav>

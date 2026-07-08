@@ -147,7 +147,7 @@ export async function apiUpdatePassStatus(
 
 export async function apiValidateScan(
   externalPassId: string,
-  scanType: 'entry' | 'meal' | 'activity' | 'verify' | 'manual' = 'entry',
+  scanType: 'entry' | 'exit' | 'meal' | 'activity' | 'verify' | 'manual' = 'entry',
   rawPayload?: string,
 ) {
   return request<{

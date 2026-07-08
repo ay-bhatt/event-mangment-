@@ -129,3 +129,14 @@ export function addActivityEntry(type: ActivityType, input: ActivityInput): Acti
   saveLocalEntries(type, next)
   return getActivityEntries(type)
 }
+
+export function importActivityEntries(type: ActivityType, entries: ActivityInput[]): ActivityEntry[] {
+  const local = loadLocalEntries(type)
+  const newEntries = entries.map((entry) => ({
+    ...entry,
+    id: `${getPrefix(type)}-${String(Date.now() + Math.random()).replace(/\D/g, '').slice(0, 8).padStart(8, '0')}`,
+  }))
+  const next = [...local, ...newEntries]
+  saveLocalEntries(type, next)
+  return getActivityEntries(type)
+}

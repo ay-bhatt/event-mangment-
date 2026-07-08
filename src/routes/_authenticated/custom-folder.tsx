@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { LayoutDashboard, FolderOpen } from 'lucide-react'
 import { CustomFolder } from '@/components/custom-folder/CustomFolder'
@@ -6,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { IntegrationBanner } from '@/components/IntegrationBanner'
 import { BRAND } from '@/lib/brand'
 import { loadSettings } from '@/lib/settings'
+import { getStoredPageTitle } from '@/lib/page-titles'
+import { PageTitleEditor } from '@/components/PageTitleEditor'
 
 export const Route = createFileRoute('/_authenticated/custom-folder')({
   component: CustomFolderPage,
@@ -13,6 +16,13 @@ export const Route = createFileRoute('/_authenticated/custom-folder')({
 
 function CustomFolderPage() {
   const settings = loadSettings()
+  const [title, setTitle] = useState(() => getStoredPageTitle('custom-folder'))
+
+  useEffect(() => {
+    const listener = () => setTitle(getStoredPageTitle('custom-folder'))
+    window.addEventListener('caumas-page-titles-updated', listener)
+    return () => window.removeEventListener('caumas-page-titles-updated', listener)
+  }, [])
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -22,9 +32,12 @@ function CustomFolderPage() {
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
               {BRAND.name} · {settings.eventName}
             </p>
-            <h1 className="mt-2 text-2xl font-bold tracking-tight md:text-3xl">
-              Custom Folder
-            </h1>
+            <div className="mt-2 flex flex-wrap items-center gap-3">
+              <h1 className="text-2xl font-bold tracking-tight md:text-3xl" title="Click Rename or double-click the sidebar label to rename this page">
+                {title}
+              </h1>
+              <PageTitleEditor pageKey="custom-folder" defaultTitle="Custom Folder" />
+            </div>
             <p className="mt-2 max-w-xl text-sm text-muted-foreground">
               Open a secure folder to manage participant QR codes and details with the same app theme and layout.
             </p>
