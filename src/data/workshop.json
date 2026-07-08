@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Karan Mehta",
+    "email": "karan.mehta@example.com",
+    "phone": "9876502001",
+    "team": "Workshop",
+    "role": "Photography Session"
+  },
+  {
+    "name": "Swati Desai",
+    "email": "swati.desai@example.com",
+    "phone": "9876502002",
+    "team": "Workshop",
+    "role": "Art Workshop"
+  },
+  {
+    "name": "Vikram Rao",
+    "email": "vikram.rao@example.com",
+    "phone": "9876502003",
+    "team": "Workshop",
+    "role": "Coding Workshop"
+  }
+]
