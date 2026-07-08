@@ -1,24 +1,12 @@
-import rawVolunteers from '@/data/example.json'
-import registryFile from '@/data/id-registry.json'
 import { loadSettings } from '@/lib/settings'
-import {
-  assignStableIds,
-  type IdRegistry,
-  type Volunteer,
-  type VolunteerInput,
-  volunteerFingerprint,
-} from '@/lib/id-registry'
+import { loadVolunteersWithIds } from '@/lib/volunteer-storage'
+import { type Volunteer, type VolunteerInput, volunteerFingerprint } from '@/lib/id-registry'
 
 export type { Volunteer, VolunteerInput }
 export { volunteerFingerprint }
 
-const sourceData = rawVolunteers as VolunteerInput[]
-const fileRegistry = registryFile as IdRegistry
-
 export function getVolunteers(): Volunteer[] {
-  const settings = loadSettings()
-  const prefix = settings.qrPrefix.trim() || 'JATRA-VOL'
-  return assignStableIds(sourceData, fileRegistry, prefix).volunteers
+  return loadVolunteersWithIds().volunteers
 }
 
 export function findVolunteerById(id: string): Volunteer | undefined {
@@ -65,12 +53,12 @@ export function parseScannedQrValue(raw: string): string | null {
   return text.toUpperCase()
 }
 
-/** Normalize manual input: full ID, URL, or numeric suffix (001 → JATRA-VOL-001). */
+/** Normalize manual input: full ID, URL, or numeric suffix (001 -> EVENT-VOL-001). */
 export function normalizeVolunteerId(input: string): string | null {
   const text = input.trim()
   if (!text) return null
 
-  const prefix = (loadSettings().qrPrefix || 'JATRA-VOL').toUpperCase()
+  const prefix = (loadSettings().qrPrefix || 'EVENT-VOL').toUpperCase()
 
   if (/^\d+$/.test(text)) {
     return `${prefix}-${text.padStart(3, '0')}`

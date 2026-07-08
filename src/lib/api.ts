@@ -4,7 +4,6 @@ import {
   getLoginHistoryId,
   getStoredUser,
   setAuthSession,
-  type AuthUser,
 } from '@/lib/session'
 
 import type { VolunteerStatus } from '@/lib/status'
@@ -44,7 +43,7 @@ async function request<T>(
 // Auth
 // ---------------------------------------------------------------------------
 
-export async function apiLogin(username: string, password: string) {
+export async function apiLogin(_username: string, _password: string) {
   const user = getStoredUser()!
   const data = {
     success: true,
@@ -160,6 +159,19 @@ export async function apiValidateScan(
   }>('/scans/validate', {
     method: 'POST',
     body: JSON.stringify({ externalPassId, scanType, rawPayload }),
+  })
+}
+
+export async function apiCheckOut(externalPassId: string, notes?: string) {
+  return request<{
+    success: boolean
+    isDuplicate?: boolean
+    message: string
+    status: VolunteerStatus
+    name?: string | null
+  }>(`/attendance/check-out`, {
+    method: 'POST',
+    body: JSON.stringify({ externalPassId, notes }),
   })
 }
 
