@@ -3,7 +3,6 @@ import { Bell, Search, Settings } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { loadSettings } from '@/lib/settings'
-import { useTheme } from '@/lib/theme'
 import { cn, getInitials } from '@/lib/utils'
 
 const topTabs = [
@@ -13,11 +12,8 @@ const topTabs = [
 ] as const
 
 export function DarkTopBar() {
-  const { theme } = useTheme()
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const settings = loadSettings()
-
-  if (theme !== 'dark') return null
 
   const isActive = (to: string) => {
     if (to === '/dashboard') return pathname === '/dashboard'

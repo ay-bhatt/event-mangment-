@@ -1,16 +1,12 @@
 import { Link, useRouterState } from '@tanstack/react-router'
-import {
-  LayoutDashboard,
-  ScanLine,
-  Settings,
-  Users,
-  UtensilsCrossed,
-} from 'lucide-react'
+import { Compass, FolderOpen, LayoutDashboard, ScanLine, Settings, Users, UtensilsCrossed } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navItems = [
   { to: '/dashboard', label: 'Home', icon: LayoutDashboard },
   { to: '/volunteers', label: 'People', icon: Users },
+  { to: '/adventure', label: 'Adventure', icon: Compass },
+  { to: '/custom-folder', label: 'Folder', icon: FolderOpen },
   { to: '/scanner', label: 'Scan', icon: ScanLine },
   { to: '/meal-scanner', label: 'Meals', icon: UtensilsCrossed },
   { to: '/settings', label: 'More', icon: Settings },
@@ -23,10 +19,7 @@ export function MobileNav() {
 
   const isActive = (to: string) => {
     if (to === '/settings') {
-      return (
-        pathname === '/settings' ||
-        activityRoutes.some((route) => pathname.startsWith(route))
-      )
+      return pathname === '/settings' || activityRoutes.some((route) => pathname.startsWith(route))
     }
     return pathname === to || (to !== '/dashboard' && pathname.startsWith(to))
   }
@@ -38,7 +31,7 @@ export function MobileNav() {
         return (
           <Link
             key={to}
-            to={to}
+            to={to as never}
             aria-label={label}
             aria-current={active ? 'page' : undefined}
             className={cn('mobile-nav-item', active && 'mobile-nav-item-active')}
