@@ -1,19 +1,29 @@
+<<<<<<< HEAD
 import { createFileRoute, Outlet, useLocation, useNavigate } from '@tanstack/react-router'
+=======
+import { createFileRoute, Outlet } from '@tanstack/react-router'
+>>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
 import { AppSidebar } from '@/components/AppSidebar'
 import { DarkTopBar } from '@/components/DarkTopBar'
 import { MobileHeader } from '@/components/MobileHeader'
 import { MobileNav } from '@/components/MobileNav'
 import { useAuth } from '@/lib/auth'
+<<<<<<< HEAD
 import { useEffect } from 'react'
 
 export const Route = createFileRoute('/_authenticated')({
   beforeLoad: async () => {
     // Wait for auth to initialize if needed
   },
+=======
+
+export const Route = createFileRoute('/_authenticated')({
+>>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
   component: AuthenticatedLayout,
 })
 
 function AuthenticatedLayout() {
+<<<<<<< HEAD
   const { isAuthenticated, isLoading, isOrganizationProfileComplete, user } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
@@ -23,6 +33,9 @@ function AuthenticatedLayout() {
       navigate({ to: '/organization-setup' })
     }
   }, [isLoading, isAuthenticated, isOrganizationProfileComplete, location.pathname, user, navigate])
+=======
+  const { isLoading } = useAuth()
+>>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
 
   if (isLoading) {
     return (
@@ -32,6 +45,7 @@ function AuthenticatedLayout() {
     )
   }
 
+<<<<<<< HEAD
   if (!isAuthenticated) {
     // Redirect to login if not authenticated
     navigate({ to: '/login' })
@@ -43,6 +57,8 @@ function AuthenticatedLayout() {
     return <Outlet />
   }
 
+=======
+>>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
   return (
     <div className="flex min-h-screen bg-background">
       <AppSidebar />

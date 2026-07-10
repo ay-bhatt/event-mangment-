@@ -1,11 +1,19 @@
+<<<<<<< HEAD
 import { Link, useRouterState, useNavigate } from '@tanstack/react-router'
 import { Bell, Search, Settings, LogOut } from 'lucide-react'
+=======
+import { Link, useRouterState } from '@tanstack/react-router'
+import { Bell, Search, Settings } from 'lucide-react'
+>>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { loadSettings } from '@/lib/settings'
 import { cn, getInitials } from '@/lib/utils'
+<<<<<<< HEAD
 import { useAuth } from '@/lib/auth'
 import { toast } from 'sonner'
+=======
+>>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
 
 const topTabs = [
   { to: '/dashboard', label: 'Dashboard' },
@@ -16,6 +24,7 @@ const topTabs = [
 export function DarkTopBar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const settings = loadSettings()
+<<<<<<< HEAD
   const { logout } = useAuth()
   const navigate = useNavigate()
 
@@ -24,6 +33,8 @@ export function DarkTopBar() {
     toast.success('Logged out successfully')
     navigate({ to: '/login' })
   }
+=======
+>>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
 
   const isActive = (to: string) => {
     if (to === '/dashboard') return pathname === '/dashboard'
@@ -79,9 +90,12 @@ export function DarkTopBar() {
             <Settings className="h-4 w-4" />
           </Link>
         </Button>
+<<<<<<< HEAD
         <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full" onClick={handleLogout} aria-label="Logout">
           <LogOut className="h-4 w-4" />
         </Button>
+=======
+>>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
         <div className="ml-1 flex items-center gap-2 rounded-full border border-primary/30 py-1 pl-1 pr-3">
           <Avatar className="h-8 w-8 border-2 border-primary">
             <AvatarFallback className="bg-primary/20 text-xs font-semibold text-primary">

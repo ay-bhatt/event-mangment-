@@ -23,6 +23,7 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:3001',
         changeOrigin: true,
+<<<<<<< HEAD
         // Suppress proxy errors to keep console clean when backend isn't running
         configure: (proxy, _options) => {
           proxy.on('error', (_err, _req, res) => {
@@ -30,6 +31,8 @@ export default defineConfig({
             res.end(JSON.stringify({ error: 'Backend unavailable' }))
           })
         },
+=======
+>>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
       },
     },
   },
