@@ -1,30 +1,3 @@
-<<<<<<< HEAD
-import type { User } from './api'
-
-const TOKEN_KEY = 'caumas_auth_token'
-const USER_KEY = 'caumas_auth_user'
-
-export type AuthUser = User
-
-export function getAuthSession(): { token: string | null; user: AuthUser | null } {
-  try {
-    const token = localStorage.getItem(TOKEN_KEY)
-    const userStr = localStorage.getItem(USER_KEY)
-    return {
-      token,
-      user: userStr ? JSON.parse(userStr) : null,
-    }
-  } catch {
-    return { token: null, user: null }
-  }
-}
-
-export function setAuthSession(token: string, user?: AuthUser) {
-  localStorage.setItem(TOKEN_KEY, token)
-  if (user) {
-    localStorage.setItem(USER_KEY, JSON.stringify(user))
-  }
-=======
 const TOKEN_KEY = 'caumas_auth_token'
 const USER_KEY = 'caumas_auth_user'
 const LOGIN_HISTORY_KEY = 'caumas_login_history_id'
@@ -56,14 +29,11 @@ export function setAuthSession(token: string, user: AuthUser, loginHistoryId?: n
     localStorage.setItem(LOGIN_HISTORY_KEY, String(loginHistoryId))
   }
   sessionStorage.setItem('caumas_admin_session', '1')
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
 }
 
 export function clearAuthSession() {
   localStorage.removeItem(TOKEN_KEY)
   localStorage.removeItem(USER_KEY)
-<<<<<<< HEAD
-=======
   localStorage.removeItem(LOGIN_HISTORY_KEY)
   sessionStorage.removeItem('caumas_admin_session')
   for (const key of ['jatra_admin_session', 'yatra_admin_session']) {
@@ -86,5 +56,4 @@ export function isAdminSessionActive(): boolean {
 /** @deprecated Use isAdminSessionActive — kept for route guards */
 export function setAdminSession(active: boolean): void {
   if (!active) clearAuthSession()
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
 }

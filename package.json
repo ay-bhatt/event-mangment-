@@ -4,27 +4,16 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-<<<<<<< HEAD
     "dev": "node run-dev.js",
     "build": "npm run generate-qrs && node run-tsc.js -b && node run-dev.js build",
     "preview": "node run-dev.js preview",
     "lint": "eslint .",
     "generate-qrs": "node run-tsx.js scripts/generate-qrs.ts"
-=======
-    "dev": "vite",
-    "build": "npm run generate-qrs && tsc -b && vite build",
-    "preview": "vite preview",
-    "lint": "eslint .",
-    "generate-qrs": "tsx scripts/generate-qrs.ts"
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.3",
     "@radix-ui/react-checkbox": "^1.1.4",
-<<<<<<< HEAD
     "@radix-ui/react-compose-refs": "^1.1.3",
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-separator": "^1.1.2",
@@ -32,10 +21,7 @@
     "@radix-ui/react-toast": "^1.2.6",
     "@radix-ui/react-tooltip": "^1.1.8",
     "@tanstack/react-router": "^1.114.25",
-<<<<<<< HEAD
     "axios": "^1.18.1",
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "emailjs-com": "^3.2.0",
@@ -47,10 +33,7 @@
     "qrcode": "^1.5.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-<<<<<<< HEAD
     "react-hook-form": "^7.81.0",
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
     "react-qr-code": "^2.0.15",
     "sonner": "^2.0.1",
     "tailwind-merge": "^3.0.1",

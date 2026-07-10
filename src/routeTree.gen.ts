@@ -9,15 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-<<<<<<< HEAD
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
-=======
-import { Route as LoginRouteImport } from './routes/login'
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VerifyIdRouteImport } from './routes/verify.$id'
@@ -25,10 +21,7 @@ import { Route as AuthenticatedWorkshopRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedVolunteersRouteImport } from './routes/_authenticated/volunteers'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedScannerRouteImport } from './routes/_authenticated/scanner'
-<<<<<<< HEAD
 import { Route as AuthenticatedOrganizationSetupRouteImport } from './routes/_authenticated/organization-setup'
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
 import { Route as AuthenticatedMealScannerRouteImport } from './routes/_authenticated/meal-scanner'
 import { Route as AuthenticatedExitRouteImport } from './routes/_authenticated/exit'
 import { Route as AuthenticatedEntryRouteImport } from './routes/_authenticated/entry'
@@ -38,7 +31,6 @@ import { Route as AuthenticatedCulturalRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedAdventureRouteImport } from './routes/_authenticated/adventure'
 import { Route as AuthenticatedCheckIdRouteImport } from './routes/_authenticated/check.$id'
 
-<<<<<<< HEAD
 const VerifyEmailRoute = VerifyEmailRouteImport.update({
   id: '/verify-email',
   path: '/verify-email',
@@ -54,21 +46,16 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-<<<<<<< HEAD
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -103,15 +90,12 @@ const AuthenticatedScannerRoute = AuthenticatedScannerRouteImport.update({
   path: '/scanner',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-<<<<<<< HEAD
 const AuthenticatedOrganizationSetupRoute =
   AuthenticatedOrganizationSetupRouteImport.update({
     id: '/organization-setup',
     path: '/organization-setup',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
 const AuthenticatedMealScannerRoute =
   AuthenticatedMealScannerRouteImport.update({
     id: '/meal-scanner',
@@ -157,15 +141,11 @@ const AuthenticatedCheckIdRoute = AuthenticatedCheckIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-<<<<<<< HEAD
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
-=======
-  '/login': typeof LoginRoute
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
   '/adventure': typeof AuthenticatedAdventureRoute
   '/cultural': typeof AuthenticatedCulturalRoute
   '/custom-folder': typeof AuthenticatedCustomFolderRoute
@@ -173,10 +153,7 @@ export interface FileRoutesByFullPath {
   '/entry': typeof AuthenticatedEntryRoute
   '/exit': typeof AuthenticatedExitRoute
   '/meal-scanner': typeof AuthenticatedMealScannerRoute
-<<<<<<< HEAD
   '/organization-setup': typeof AuthenticatedOrganizationSetupRoute
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
   '/scanner': typeof AuthenticatedScannerRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/volunteers': typeof AuthenticatedVolunteersRoute
@@ -186,15 +163,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-<<<<<<< HEAD
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
-=======
-  '/login': typeof LoginRoute
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
   '/adventure': typeof AuthenticatedAdventureRoute
   '/cultural': typeof AuthenticatedCulturalRoute
   '/custom-folder': typeof AuthenticatedCustomFolderRoute
@@ -202,10 +175,7 @@ export interface FileRoutesByTo {
   '/entry': typeof AuthenticatedEntryRoute
   '/exit': typeof AuthenticatedExitRoute
   '/meal-scanner': typeof AuthenticatedMealScannerRoute
-<<<<<<< HEAD
   '/organization-setup': typeof AuthenticatedOrganizationSetupRoute
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
   '/scanner': typeof AuthenticatedScannerRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/volunteers': typeof AuthenticatedVolunteersRoute
@@ -217,15 +187,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
-<<<<<<< HEAD
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
-=======
-  '/login': typeof LoginRoute
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
   '/_authenticated/adventure': typeof AuthenticatedAdventureRoute
   '/_authenticated/cultural': typeof AuthenticatedCulturalRoute
   '/_authenticated/custom-folder': typeof AuthenticatedCustomFolderRoute
@@ -233,10 +199,7 @@ export interface FileRoutesById {
   '/_authenticated/entry': typeof AuthenticatedEntryRoute
   '/_authenticated/exit': typeof AuthenticatedExitRoute
   '/_authenticated/meal-scanner': typeof AuthenticatedMealScannerRoute
-<<<<<<< HEAD
   '/_authenticated/organization-setup': typeof AuthenticatedOrganizationSetupRoute
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
   '/_authenticated/scanner': typeof AuthenticatedScannerRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/volunteers': typeof AuthenticatedVolunteersRoute
@@ -248,15 +211,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-<<<<<<< HEAD
     | '/forgot-password'
     | '/login'
     | '/register'
     | '/reset-password'
     | '/verify-email'
-=======
-    | '/login'
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
     | '/adventure'
     | '/cultural'
     | '/custom-folder'
@@ -264,10 +223,7 @@ export interface FileRouteTypes {
     | '/entry'
     | '/exit'
     | '/meal-scanner'
-<<<<<<< HEAD
     | '/organization-setup'
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
     | '/scanner'
     | '/settings'
     | '/volunteers'
@@ -277,15 +233,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-<<<<<<< HEAD
     | '/forgot-password'
     | '/login'
     | '/register'
     | '/reset-password'
     | '/verify-email'
-=======
-    | '/login'
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
     | '/adventure'
     | '/cultural'
     | '/custom-folder'
@@ -293,10 +245,7 @@ export interface FileRouteTypes {
     | '/entry'
     | '/exit'
     | '/meal-scanner'
-<<<<<<< HEAD
     | '/organization-setup'
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
     | '/scanner'
     | '/settings'
     | '/volunteers'
@@ -307,15 +256,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
-<<<<<<< HEAD
     | '/forgot-password'
     | '/login'
     | '/register'
     | '/reset-password'
     | '/verify-email'
-=======
-    | '/login'
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
     | '/_authenticated/adventure'
     | '/_authenticated/cultural'
     | '/_authenticated/custom-folder'
@@ -323,10 +268,7 @@ export interface FileRouteTypes {
     | '/_authenticated/entry'
     | '/_authenticated/exit'
     | '/_authenticated/meal-scanner'
-<<<<<<< HEAD
     | '/_authenticated/organization-setup'
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
     | '/_authenticated/scanner'
     | '/_authenticated/settings'
     | '/_authenticated/volunteers'
@@ -338,21 +280,16 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
-<<<<<<< HEAD
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
-=======
-  LoginRoute: typeof LoginRoute
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
   VerifyIdRoute: typeof VerifyIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-<<<<<<< HEAD
     '/verify-email': {
       id: '/verify-email'
       path: '/verify-email'
@@ -374,8 +311,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
     '/login': {
       id: '/login'
       path: '/login'
@@ -383,7 +318,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-<<<<<<< HEAD
     '/forgot-password': {
       id: '/forgot-password'
       path: '/forgot-password'
@@ -391,8 +325,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -442,7 +374,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedScannerRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-<<<<<<< HEAD
     '/_authenticated/organization-setup': {
       id: '/_authenticated/organization-setup'
       path: '/organization-setup'
@@ -450,8 +381,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOrganizationSetupRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
     '/_authenticated/meal-scanner': {
       id: '/_authenticated/meal-scanner'
       path: '/meal-scanner'
@@ -519,10 +448,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedEntryRoute: typeof AuthenticatedEntryRoute
   AuthenticatedExitRoute: typeof AuthenticatedExitRoute
   AuthenticatedMealScannerRoute: typeof AuthenticatedMealScannerRoute
-<<<<<<< HEAD
   AuthenticatedOrganizationSetupRoute: typeof AuthenticatedOrganizationSetupRoute
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
   AuthenticatedScannerRoute: typeof AuthenticatedScannerRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedVolunteersRoute: typeof AuthenticatedVolunteersRoute
@@ -538,10 +464,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedEntryRoute: AuthenticatedEntryRoute,
   AuthenticatedExitRoute: AuthenticatedExitRoute,
   AuthenticatedMealScannerRoute: AuthenticatedMealScannerRoute,
-<<<<<<< HEAD
   AuthenticatedOrganizationSetupRoute: AuthenticatedOrganizationSetupRoute,
-=======
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
   AuthenticatedScannerRoute: AuthenticatedScannerRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedVolunteersRoute: AuthenticatedVolunteersRoute,
@@ -556,15 +479,11 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
-<<<<<<< HEAD
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   VerifyEmailRoute: VerifyEmailRoute,
-=======
-  LoginRoute: LoginRoute,
->>>>>>> 596041dd872ed2d87ec020683ec940e19571c71c
   VerifyIdRoute: VerifyIdRoute,
 }
 export const routeTree = rootRouteImport
